@@ -1,0 +1,2 @@
+py-rapl: a very simple library to sample RAPL counters via powercap/sysfs interface
+
