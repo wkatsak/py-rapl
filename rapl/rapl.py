@@ -150,9 +150,9 @@ class RAPLSample(object):
 		if unit == UJOULES:
 			return e
 		elif unit == JOULES:
-			return e / 1000000.0
+			return e / 1000000
 		elif unit == WATT_HOURS:
-			return e / (1000000.0*3600.0)
+			return e / (1000000*3600)
 
 class RAPLDifference(RAPLSample):
 	def average_power(self, package, domain=None):
