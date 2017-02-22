@@ -15,8 +15,9 @@ def _read_sysfs_file(path):
 def _get_domain_info(path):
 	name = _read_sysfs_file("%s/name" % path)
 	energy_uj = int(_read_sysfs_file("%s/energy_uj" % path))
+	max_energy_range_uj = int(_read_sysfs_file("%s/max_energy_range_uj" % path))
 
-	return name, energy_uj
+	return name, energy_uj, max_energy_range_uj
 
 def _walk_rapl_dir(path):
 	regex = re.compile("intel-rapl")
@@ -32,13 +33,15 @@ class RAPLDomain(object):
 
 	@classmethod
 	def construct(cls, id, path):
-		name, energy_uj = _get_domain_info(path)
+		name, energy_uj, max_energy_range_uj = _get_domain_info(path)
 
 		domain = RAPLDomain()
 		domain.name = name
 		domain.id = id
 		domain.values = {}
 		domain.values["energy_uj"] = energy_uj
+		domain.max_values = {}
+		domain.max_values["energy_uj"] = max_energy_range_uj
 		domain.subdomains = {}
 		domain.parent = None
 
@@ -66,7 +69,12 @@ class RAPLDomain(object):
 		domain.id = self.id
 		domain.values = {}
 		for v in self.values:
-			domain.values[v] = self.values[v] - other.values[v]
+			diff = self.values[v] - other.values[v]
+			# if there was a rollover
+			if diff < 0:
+				print "rollover detected..."
+				diff = domain.max_values[v] + diff
+			domain.values[v] = diff
 
 		domain.subdomains = {}
 		domain.parent = None
