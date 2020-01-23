@@ -187,13 +187,12 @@ class RAPLSample(object):
 			return e / (1000000*3600)
 
 class RAPLDifference(RAPLSample):
+
 	def average_power(self, package, domain=None):
 		return self.energy(package, domain, unit=JOULES) / self.duration
 
 class RAPLMonitor(object):
+
 	@classmethod
 	def sample(cls):
 		return RAPLSample.take_sample()
-
-
-
