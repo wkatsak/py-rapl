@@ -17,4 +17,4 @@ if __name__ == "__main__":
 		diffe = diff.energy("package-0", "core")
 		power = diff.average_power("package-0", "core")
 	
-		print "%d - %d = %d ----- (power=%0.2fW)" % (s2e, s1e, diffe, power)
+		print("%d - %d = %d ----- (power=%0.2fW)" % (s2e, s1e, diffe, power))
