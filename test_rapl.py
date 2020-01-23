@@ -17,12 +17,12 @@ if __name__ == "__main__":
 	for d in diff.domains:
 		domain = diff.domains[d]
 		power = diff.average_power(package=domain.name)
-		print "%s - %0.2f W" % (domain.name, power)
+		print("%s - %0.2f W" % (domain.name, power))
 
 		for sd in domain.subdomains:
 			subdomain = domain.subdomains[sd]
 			power = diff.average_power(package=domain.name, domain=subdomain.name)
-			print "\t%s - %0.2f W" % (subdomain.name, power)
+			print("\t%s - %0.2f W" % (subdomain.name, power))
 
 
 	#print "Diff", diff.energy("package-0", "core", rapl.WATT_HOURS), diff.average_power("package-0", "core")
