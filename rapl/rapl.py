@@ -4,8 +4,9 @@ import re
 from datetime import datetime
 
 UJOULES = 1
-JOULES = 2
-WATT_HOURS = 3
+MILLIJOULES = 2
+JOULES = 3
+WATT_HOURS = 4
 
 def _read_sysfs_file(path):
 	with open(path, "r") as f:
@@ -178,6 +179,8 @@ class RAPLSample(object):
 
 		if unit == UJOULES:
 			return e
+		elif unit == MILLIJOULES:
+			return e / 1000
 		elif unit == JOULES:
 			return e / 1000000
 		elif unit == WATT_HOURS:
