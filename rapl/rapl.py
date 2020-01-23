@@ -57,7 +57,7 @@ class RAPLDomain(object):
 		return ":".join(splits[0:2])
 
 	def print_tree(self):
-		print self
+		print(self)
 		for s in self.subdomains:
 			self.subdomains[s].print_tree()
 
