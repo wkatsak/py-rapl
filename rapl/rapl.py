@@ -60,25 +60,46 @@ class RAPLDomain(object):
 		for s in self.subdomains:
 			self.subdomains[s].print_tree()
 
-	# take the difference of two domain samples
+	# take the difference of two domain samples, returning a new domain representing that difference
 	def __sub__(self, other):
+		# make sure that the domains are comparable
+		# check the name and id
 		assert self.name == other.name and self.id == other.id
+		# check to make sure that they have the same values
+		for key in self.values:
+			assert key in other.values
+		# check to make sure that the max values are the same
+		for key in self.max_values:
+			assert(self.max_values[key] == other.max_values[key])
 
+		# create a new domain to represent the difference
 		domain = RAPLDomain()
+
+		# copy the name and id
 		domain.name = self.name
 		domain.id = self.id
+
+		# calculate the difference of each value
 		domain.values = {}
 		for v in self.values:
+			# take the difference of the values
 			diff = self.values[v] - other.values[v]
-			# if there was a rollover
+			# detect if there was a rollover, and handle it
 			if diff < 0:
-				print "rollover detected..."
-				diff = domain.max_values[v] + diff
+				diff = self.max_values[v] + diff
+			# save teh difference in the new domain
 			domain.values[v] = diff
 
+		# copy the max values to the new domain
+		domain.max_values = {}
+		for v in self.max_values:
+			domain.max_values[v] = self.max_values[v]
+
+		# set up the subdomain and parent fields
 		domain.subdomains = {}
 		domain.parent = None
 
+		# return the new domain
 		return domain
 
 	def __str__(self):
